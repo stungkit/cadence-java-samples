@@ -26,9 +26,11 @@ public final class OrderFulfillmentModels {
    * Order state machine transitions:
    *
    *   pending_payment ──► payment_approved ──► ready_to_ship ──► shipped ──► delivered
-   *        │                    │                                   │
-   *        ▼                    ▼                                   ▼
-   *    cancelled            refunded                            refunded
+   *        │                    │                    │               │
+   *        ▼                    ▼                    ▼               ▼
+   *    cancelled            refunded            cancelled        refunded
+   *
+   *   pending_payment → cancelled is via reject_payment (not cancel_order).
    */
   public static final String STATUS_PENDING_PAYMENT = "pending_payment";
   public static final String STATUS_PAYMENT_APPROVED = "payment_approved";

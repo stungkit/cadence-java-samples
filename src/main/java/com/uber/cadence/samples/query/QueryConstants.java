@@ -40,7 +40,7 @@ public final class QueryConstants {
   public static final String MARKDOWN_QUERY_WORKFLOW_TYPE = "MarkdownQueryWorkflow";
 
   /**
-   * Markdoc {@code signalName} for {@link MarkdownQueryWorkflow.WorkflowIface#complete(Object)}.
+   * Markdoc {@code signalName} for {@link MarkdownQueryWorkflow.WorkflowIface#complete(boolean)}.
    *
    * <p>The Cadence Java SDK registers workflow signals as {@code InterfaceName::methodName} (here
    * {@code WorkflowIface::complete}). Cadence Web sends the raw string from the Markdoc template,

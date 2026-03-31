@@ -27,6 +27,8 @@ These samples demonstrate various capabilities of Java Cadence client and server
     the result to a destination. The first activity can be picked up by any worker. However, the second and third activities
     must be executed on the same host as the first one.
 
+* **Custom Workflow Controls** ([`com.uber.cadence.samples.query`](src/main/java/com/uber/cadence/samples/query/)) — workflow queries that return **markdown** for Cadence Web (Markdoc buttons that **signal** workflows or **start** new workflows). **Requires Cadence Web v4.0.14+.** Copy-paste run instructions: [query samples README](src/main/java/com/uber/cadence/samples/query/README.md).
+
 ## Get the Samples
 
 Run the following commands:
@@ -79,6 +81,8 @@ top right corner from "Open" to "Closed" to see the list of the completed workfl
 Click on a *RUN ID* of a workflow to see more details about it. Try different view formats to get a different level of
 details about the execution history.
 
+For **query responses rendered as markdown** (Custom Workflow Controls), use **Cadence Web v4.0.14 or newer** and follow the [query samples README](src/main/java/com/uber/cadence/samples/query/README.md).
+
 ## Install Cadence CLI
 
 [Command Line Interface Documentation](https://mfateev.github.io/cadence/docs/08_cli)
@@ -118,7 +122,23 @@ execute together, we recommend that you run more than one instance of this worke
 The second command starts workflows. Each invocation starts a new workflow execution.
 
     ./gradlew -q execute -PmainClass=com.uber.cadence.samples.fileprocessing.FileProcessingStarter
-    
+
+### Custom Workflow Controls (Markdoc query responses)
+
+These samples need **Cadence Web v4.0.14+**. Run a **worker** in one terminal, then a **starter** in another. See [src/main/java/com/uber/cadence/samples/query/README.md](src/main/java/com/uber/cadence/samples/query/README.md) for full copy-paste steps.
+
+Worker (task list `query`):
+
+    ./gradlew -q execute -PmainClass=com.uber.cadence.samples.query.QueryWorker
+
+Starters (pick one per run):
+
+    ./gradlew -q execute -PmainClass=com.uber.cadence.samples.query.MarkdownQueryStarter
+    ./gradlew -q execute -PmainClass=com.uber.cadence.samples.query.LunchVoteStarter
+    ./gradlew -q execute -PmainClass=com.uber.cadence.samples.query.OrderFulfillmentStarter
+
+In Cadence Web, open the workflow → **Query** tab → run query **`Signal`**, **`options`**, or **`dashboard`** (matching the starter you used).
+
 ### Trip Booking
 
 Cadence implementation of the [Camunda BPMN trip booking example](https://github.com/berndruecker/trip-booking-saga-java)

@@ -17,6 +17,9 @@
 
 package com.uber.cadence.samples.query;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * The JSON shape Cadence Web (v4.0.14+) expects for formatted query responses. When a {@link
  * com.uber.cadence.workflow.QueryMethod} returns this object, the default data converter serializes
@@ -40,14 +43,27 @@ public final class MarkdownFormattedResponse {
   private final String data;
 
   /**
+   * Constructor for JSON deserialization (e.g. Java clients using the Cadence SDK data converter).
+   * A no-arg constructor cannot populate {@code private final} fields; {@code @JsonCreator} with
+   * explicit properties is required.
+   */
+  @JsonCreator
+  private MarkdownFormattedResponse(
+      @JsonProperty("cadenceResponseType") String cadenceResponseType,
+      @JsonProperty("format") String format,
+      @JsonProperty("data") String data) {
+    this.cadenceResponseType = cadenceResponseType;
+    this.format = format;
+    this.data = data;
+  }
+
+  /**
    * @param markdownData the markdown string to render in Cadence Web. May include Markdoc tags such
    *     as {@code {%- signal -%}} and {@code {%- start -%}}.
    */
   public MarkdownFormattedResponse(String markdownData) {
     // These two values are the required constants that Cadence Web checks for.
-    this.cadenceResponseType = "formattedData";
-    this.format = "text/markdown";
-    this.data = markdownData;
+    this("formattedData", "text/markdown", markdownData);
   }
 
   public String getCadenceResponseType() {

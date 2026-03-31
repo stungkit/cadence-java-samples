@@ -1,5 +1,7 @@
 # Custom Workflow Controls (Markdoc query samples)
 
+> **Concept overview:** [Workflow queries with formatted data](https://cadenceworkflow.io/docs/concepts/workflow-queries-formatted-data)
+
 These workflows return **formatted markdown** from workflow queries so [Cadence Web](https://github.com/cadence-workflow/cadence-web) can render **Custom Workflow Controls**: Markdoc tags such as `{% signal %}` and `{% start %}` become buttons that signal this workflow or start a new one.
 
 **Requires Cadence Web v4.0.14 or newer** for markdown rendering and interactive controls.
@@ -75,4 +77,3 @@ Run **one** of the starters (each starts a new workflow execution on task list `
 | Lunch voting | [`LunchVoteWorkflow.java`](LunchVoteWorkflow.java) | `options` |
 | Order dashboard | [`OrderFulfillmentWorkflow.java`](OrderFulfillmentWorkflow.java) | `dashboard` |
 
-See also: [Workflow queries with formatted data](https://cadenceworkflow.io/docs/concepts/workflow-queries-formatted-data) (conceptual overview).

@@ -20,9 +20,6 @@ package com.uber.cadence.samples.query;
 import static com.uber.cadence.samples.query.QueryConstants.TASK_LIST;
 
 import com.uber.cadence.client.WorkflowClient;
-import com.uber.cadence.client.WorkflowClientOptions;
-import com.uber.cadence.internal.compatibility.Thrift2ProtoAdapter;
-import com.uber.cadence.internal.compatibility.proto.serviceclient.IGrpcServiceStubs;
 import com.uber.cadence.worker.Worker;
 import com.uber.cadence.worker.WorkerFactory;
 import com.uber.cadence.samples.common.SampleConstants;
@@ -37,10 +34,7 @@ public final class QueryWorker {
   private QueryWorker() {}
 
   public static void main(String[] args) {
-    WorkflowClient workflowClient =
-        WorkflowClient.newInstance(
-            new Thrift2ProtoAdapter(IGrpcServiceStubs.newInstance()),
-            WorkflowClientOptions.newBuilder().setDomain(SampleConstants.DOMAIN).build());
+    WorkflowClient workflowClient = QuerySampleSupport.newWorkflowClient();
 
     WorkerFactory factory = WorkerFactory.newInstance(workflowClient);
     Worker worker = factory.newWorker(TASK_LIST);

@@ -85,9 +85,7 @@ public final class LunchVoteWorkflow {
 
     private final List<LunchOrder> votes = new ArrayList<>();
 
-    /** Cached on the workflow thread; queries must not call {@link Workflow#getWorkflowInfo()}. */
     private String cachedWorkflowId = "";
-
     private String cachedRunId = "";
 
     @Override

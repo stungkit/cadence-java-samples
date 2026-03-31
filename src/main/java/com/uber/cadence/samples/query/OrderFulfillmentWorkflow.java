@@ -107,10 +107,8 @@ public final class OrderFulfillmentWorkflow {
      */
     private final ArrayDeque<Object> inbox = new ArrayDeque<>();
 
-    /** Cached in constructor (workflow thread); queries must not call {@link Workflow#getWorkflowInfo()}. */
-    private final String cachedWorkflowId;
-
-    private final String cachedRunId;
+    private final String cachedWorkflowId = "";
+    private final String cachedRunId = "";
 
     /** Inbox wrapper so {@code mark_ready_to_ship} vs {@code mark_delivered} are not ambiguous. */
     private static final class ReadyToShipMessage {

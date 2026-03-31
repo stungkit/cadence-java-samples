@@ -93,17 +93,11 @@ public final class MarkdownQueryWorkflow {
     private boolean hasCompleteSignal;
     private boolean completeFlag;
 
-    /**
-     * Query handlers run on a different thread in the Java SDK and must not call {@link
-     * Workflow#getWorkflowInfo()} or {@link Workflow#currentTimeMillis()}. Cache these on the
-     * workflow thread in {@link #run()}.
-     */
     private String cachedWorkflowId = "";
-
     private String cachedRunId = "";
 
-    /** Suggested id for {% start %}; refreshed on the workflow thread after each activity. */
-    private String suggestedNewWorkflowId = "markdown-pending";
+    /** Set by {@link #refreshSuggestedStartWorkflowId()} in {@code run()} before any query executes. */
+    private String suggestedNewWorkflowId = "";
 
     @Override
     public void run() {

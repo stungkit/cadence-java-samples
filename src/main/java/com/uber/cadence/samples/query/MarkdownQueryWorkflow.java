@@ -43,17 +43,18 @@ public final class MarkdownQueryWorkflow {
    *
    * <ul>
    *   <li>{@code @WorkflowMethod} — the entry point; loops waiting for signals.
-   *   <li>{@code @QueryMethod} — returns a {@link MarkdownFormattedResponse} so Cadence Web
-   *       renders interactive markdown instead of raw JSON.
+   *   <li>{@code @QueryMethod} — returns a {@link MarkdownFormattedResponse} so Cadence Web renders
+   *       interactive markdown instead of raw JSON.
    *   <li>{@code @SignalMethod} — receives external input (from Markdoc buttons or the CLI).
    * </ul>
    */
   public interface WorkflowIface {
 
     @WorkflowMethod(
-        name = QueryConstants.MARKDOWN_QUERY_WORKFLOW_TYPE,
-        executionStartToCloseTimeoutSeconds = 3600,
-        taskList = TASK_LIST)
+      name = QueryConstants.MARKDOWN_QUERY_WORKFLOW_TYPE,
+      executionStartToCloseTimeoutSeconds = 3600,
+      taskList = TASK_LIST
+    )
     void run();
 
     /**
@@ -96,7 +97,9 @@ public final class MarkdownQueryWorkflow {
     private String cachedWorkflowId = "";
     private String cachedRunId = "";
 
-    /** Set by {@link #refreshSuggestedStartWorkflowId()} in {@code run()} before any query executes. */
+    /**
+     * Set by {@link #refreshSuggestedStartWorkflowId()} in {@code run()} before any query executes.
+     */
     private String suggestedNewWorkflowId = "";
 
     @Override

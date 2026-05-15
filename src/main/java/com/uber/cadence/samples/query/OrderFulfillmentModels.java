@@ -50,8 +50,7 @@ public final class OrderFulfillmentModels {
     public String customerEmail = "alice.johnson@example.com";
     public OrderItem[] items =
         new OrderItem[] {
-          new OrderItem("Wireless Headphones", 2, 79.99),
-          new OrderItem("Phone Case", 1, 19.99),
+          new OrderItem("Wireless Headphones", 2, 79.99), new OrderItem("Phone Case", 1, 19.99),
         };
     public double totalAmount = 179.97;
     public String status = STATUS_PENDING_PAYMENT;
@@ -86,8 +85,8 @@ public final class OrderFulfillmentModels {
   /**
    * Signal POJOs below use public fields so the Cadence JSON data converter can deserialize them.
    * Field names must match the JSON keys in each Markdoc {@code input=} attribute; for example
-   * {@code input={"operator":"admin","reason":"Fraud"}} maps to {@link #operator} and
-   * {@link #reason}.
+   * {@code input={"operator":"admin","reason":"Fraud"}} maps to {@link #operator} and {@link
+   * #reason}.
    */
   public static class RejectPaymentSignal {
     public String reason;

@@ -39,8 +39,8 @@ public final class LunchVoteWorkflow {
 
   /**
    * Signal payload for a lunch vote. Public fields are required so Cadence's JSON data converter
-   * can deserialize the signal input. Field names must match the JSON keys in the Markdoc
-   * {@code input=} attribute (e.g. {@code input={"location":"Farmhouse","meal":"Red Thai Curry"}}).
+   * can deserialize the signal input. Field names must match the JSON keys in the Markdoc {@code
+   * input=} attribute (e.g. {@code input={"location":"Farmhouse","meal":"Red Thai Curry"}}).
    */
   public static class LunchOrder {
     public String location;
@@ -64,9 +64,10 @@ public final class LunchVoteWorkflow {
   public interface WorkflowIface {
 
     @WorkflowMethod(
-        name = QueryConstants.LUNCH_VOTE_WORKFLOW_TYPE,
-        executionStartToCloseTimeoutSeconds = 700,
-        taskList = TASK_LIST)
+      name = QueryConstants.LUNCH_VOTE_WORKFLOW_TYPE,
+      executionStartToCloseTimeoutSeconds = 700,
+      taskList = TASK_LIST
+    )
     void run();
 
     /** Visible as "options" in the Cadence Web Query dropdown. */
@@ -74,8 +75,8 @@ public final class LunchVoteWorkflow {
     MarkdownFormattedResponse optionsQuery();
 
     /**
-     * {@code name} sets the signal type string the worker listens for. It must match the
-     * {@code signalName} attribute in the Markdoc template so Cadence Web sends the right signal.
+     * {@code name} sets the signal type string the worker listens for. It must match the {@code
+     * signalName} attribute in the Markdoc template so Cadence Web sends the right signal.
      */
     @SignalMethod(name = "lunch_order")
     void lunchOrder(LunchOrder vote);
@@ -136,8 +137,10 @@ public final class LunchVoteWorkflow {
       return new MarkdownFormattedResponse(data);
     }
 
-    /** Builds a Markdoc {@code {%- signal -%}} tag. Every attribute is required for Cadence Web
-     *  to route the signal to the correct workflow execution. */
+    /**
+     * Builds a Markdoc {@code {%- signal -%}} tag. Every attribute is required for Cadence Web to
+     * route the signal to the correct workflow execution.
+     */
     private static String signalBlock(
         String workflowId, String runId, String label, String jsonInput) {
       return "{% signal \n"

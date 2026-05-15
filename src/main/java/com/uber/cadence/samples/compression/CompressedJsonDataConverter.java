@@ -65,15 +65,14 @@ public final class CompressedJsonDataConverter implements DataConverter {
     if (jsonBytes == null || jsonBytes.length == 0) {
       return jsonBytes;
     }
+      
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
     try {
-      ByteArrayOutputStream out = new ByteArrayOutputStream();
-      try (GZIPOutputStream gzip = new GZIPOutputStream(out)) {
-        gzip.write(jsonBytes);
-      }
-      return out.toByteArray();
+      gzip.write(jsonBytes);
     } catch (IOException e) {
       throw new DataConverterException("Failed to gzip-compress JSON payload", e);
     }
+      return out.toByteArray();
   }
 
   @Override

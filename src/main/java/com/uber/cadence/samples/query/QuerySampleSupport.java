@@ -43,7 +43,8 @@ final class QuerySampleSupport {
       String m = c.getMessage();
       if (m != null && m.contains("Domain") && m.contains("does not exist")) {
         System.err.println();
-        System.err.println("Cadence reported that the domain \"" + SampleConstants.DOMAIN + "\" does not exist.");
+        System.err.println(
+            "Cadence reported that the domain \"" + SampleConstants.DOMAIN + "\" does not exist.");
         System.err.println("Register it once against your cluster, then run this starter again:");
         System.err.println();
         System.err.println(

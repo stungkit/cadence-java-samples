@@ -51,16 +51,17 @@ public final class OrderFulfillmentWorkflow {
 
   /**
    * Dashboard pattern: one query method renders the full markdown UI (tables, status, action
-   * buttons), and multiple signal methods drive state transitions on the order. The {@code name}
-   * on each {@code @SignalMethod} must match the {@code signalName} in the Markdoc template;
-   * without {@code name}, the Java SDK would default to {@code WorkflowIface::methodName}.
+   * buttons), and multiple signal methods drive state transitions on the order. The {@code name} on
+   * each {@code @SignalMethod} must match the {@code signalName} in the Markdoc template; without
+   * {@code name}, the Java SDK would default to {@code WorkflowIface::methodName}.
    */
   public interface WorkflowIface {
 
     @WorkflowMethod(
-        name = QueryConstants.ORDER_FULFILLMENT_WORKFLOW_TYPE,
-        executionStartToCloseTimeoutSeconds = 3600,
-        taskList = TASK_LIST)
+      name = QueryConstants.ORDER_FULFILLMENT_WORKFLOW_TYPE,
+      executionStartToCloseTimeoutSeconds = 3600,
+      taskList = TASK_LIST
+    )
     void run();
 
     /** Visible as "dashboard" in the Cadence Web Query dropdown. */
@@ -101,9 +102,8 @@ public final class OrderFulfillmentWorkflow {
 
     /**
      * Inbox for signal-to-main-loop communication. Signal handlers (which execute on the workflow
-     * thread but outside the main loop) enqueue messages here. The main {@link #run()} loop
-     * drains the inbox one message at a time, keeping state transitions sequential and
-     * deterministic.
+     * thread but outside the main loop) enqueue messages here. The main {@link #run()} loop drains
+     * the inbox one message at a time, keeping state transitions sequential and deterministic.
      */
     private final ArrayDeque<Object> inbox = new ArrayDeque<>();
 
@@ -136,8 +136,7 @@ public final class OrderFulfillmentWorkflow {
       created.action = "Order Created";
       created.operator = "System";
       created.details =
-          String.format(
-              Locale.US, "Order %s created for %s", order.orderID, order.customerName);
+          String.format(Locale.US, "Order %s created for %s", order.orderID, order.customerName);
       actionLog.add(created);
     }
 
@@ -214,15 +213,11 @@ public final class OrderFulfillmentWorkflow {
               "Order Shipped",
               getOperator(signal.operator),
               String.format(
-                  Locale.US,
-                  "Carrier: %s, Tracking: %s",
-                  signal.carrier,
-                  signal.trackingNumber)));
+                  Locale.US, "Carrier: %s, Tracking: %s", signal.carrier, signal.trackingNumber)));
     }
 
     private void handleRefund(OrderFulfillmentModels.RefundSignal signal) {
-      if (!STATUS_PAYMENT_APPROVED.equals(order.status)
-          && !STATUS_SHIPPED.equals(order.status)) {
+      if (!STATUS_PAYMENT_APPROVED.equals(order.status) && !STATUS_SHIPPED.equals(order.status)) {
         return;
       }
       order.status = STATUS_REFUNDED;
@@ -232,8 +227,7 @@ public final class OrderFulfillmentWorkflow {
           entry(
               "Refund Issued",
               getOperator(signal.operator),
-              String.format(
-                  Locale.US, "Amount: $%.2f, Reason: %s", signal.amount, signal.reason)));
+              String.format(Locale.US, "Amount: $%.2f, Reason: %s", signal.amount, signal.reason)));
     }
 
     private void handleCancel(OrderFulfillmentModels.CancelOrderSignal signal) {
@@ -260,7 +254,8 @@ public final class OrderFulfillmentWorkflow {
               "Package confirmed delivered to customer"));
     }
 
-    private OrderFulfillmentModels.ActionLogEntry entry(String action, String operator, String details) {
+    private OrderFulfillmentModels.ActionLogEntry entry(
+        String action, String operator, String details) {
       OrderFulfillmentModels.ActionLogEntry e = new OrderFulfillmentModels.ActionLogEntry();
       e.timestampMillis = Workflow.currentTimeMillis();
       e.action = action;
@@ -320,19 +315,12 @@ public final class OrderFulfillmentWorkflow {
 
       String trackingRow = "";
       if (order.trackingNum != null && !order.trackingNum.isEmpty()) {
-        trackingRow =
-            "\n| **Tracking** | "
-                + order.carrier
-                + " - "
-                + order.trackingNum
-                + " |";
+        trackingRow = "\n| **Tracking** | " + order.carrier + " - " + order.trackingNum + " |";
       }
       String refundRow = "";
       if (order.refundAmount > 0) {
         refundRow =
-            "\n| **Refund** | $"
-                + String.format(Locale.US, "%.2f", order.refundAmount)
-                + " |";
+            "\n| **Refund** | $" + String.format(Locale.US, "%.2f", order.refundAmount) + " |";
       }
 
       return "\n## 🛒 Order Dashboard\n\n"
@@ -420,7 +408,10 @@ public final class OrderFulfillmentWorkflow {
             String.format(
                 Locale.US,
                 "| %s | %d | $%.2f | $%.2f |\n",
-                item.name, item.quantity, item.price, subtotal));
+                item.name,
+                item.quantity,
+                item.price,
+                subtotal));
       }
       return table.toString();
     }
@@ -445,8 +436,8 @@ public final class OrderFulfillmentWorkflow {
 
     /**
      * Key to the "state-driven UI" pattern: the set of rendered Markdoc buttons depends on the
-     * current order status. For example, shipping options only appear when the order is
-     * {@code ready_to_ship}, and approval buttons only appear when {@code pending_payment}.
+     * current order status. For example, shipping options only appear when the order is {@code
+     * ready_to_ship}, and approval buttons only appear when {@code pending_payment}.
      */
     private static String makeActionButtons(
         String workflowId, String runId, OrderFulfillmentModels.Order order) {
@@ -490,9 +481,7 @@ public final class OrderFulfillmentWorkflow {
               + "\n**Refund Options:**\n\n"
               + sig(
                   "issue_refund",
-                  "💰 Full Refund ($"
-                      + String.format(Locale.US, "%.2f", order.totalAmount)
-                      + ")",
+                  "💰 Full Refund ($" + String.format(Locale.US, "%.2f", order.totalAmount) + ")",
                   workflowId,
                   runId,
                   String.format(
@@ -550,9 +539,7 @@ public final class OrderFulfillmentWorkflow {
               + "\n**Refund Options:**\n\n"
               + sig(
                   "issue_refund",
-                  "💰 Full Refund ($"
-                      + String.format(Locale.US, "%.2f", order.totalAmount)
-                      + ")",
+                  "💰 Full Refund ($" + String.format(Locale.US, "%.2f", order.totalAmount) + ")",
                   workflowId,
                   runId,
                   String.format(

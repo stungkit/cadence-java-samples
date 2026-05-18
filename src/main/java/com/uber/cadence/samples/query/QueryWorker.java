@@ -20,9 +20,9 @@ package com.uber.cadence.samples.query;
 import static com.uber.cadence.samples.query.QueryConstants.TASK_LIST;
 
 import com.uber.cadence.client.WorkflowClient;
+import com.uber.cadence.samples.common.SampleConstants;
 import com.uber.cadence.worker.Worker;
 import com.uber.cadence.worker.WorkerFactory;
-import com.uber.cadence.samples.common.SampleConstants;
 
 /**
  * Hosts all Custom Workflow Controls sample workflows and {@link
@@ -46,13 +46,17 @@ public final class QueryWorker {
         MarkdownQueryWorkflow.WorkflowImpl.class,
         LunchVoteWorkflow.WorkflowImpl.class,
         OrderFulfillmentWorkflow.WorkflowImpl.class);
-    worker.registerActivitiesImplementations(new MarkdownQueryWorkflow.MarkdownQueryActivitiesImpl());
+    worker.registerActivitiesImplementations(
+        new MarkdownQueryWorkflow.MarkdownQueryActivitiesImpl());
 
     // Non-blocking: the worker threads poll the task list in the background and this process
     // stays alive until killed.
     factory.start();
-    System.out.println("QueryWorker listening on task list \"" + TASK_LIST + "\" (domain \""
-        + SampleConstants.DOMAIN
-        + "\").");
+    System.out.println(
+        "QueryWorker listening on task list \""
+            + TASK_LIST
+            + "\" (domain \""
+            + SampleConstants.DOMAIN
+            + "\").");
   }
 }
